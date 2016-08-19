@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProgressWheel"/>
+    <declare-styleable name="ProgressWheel_barWidth"/>
+    <declare-styleable name="ProgressWheel_rimWidth"/>
+    <declare-styleable name="ProgressWheel_spinSpeed"/>
+    <declare-styleable name="ProgressWheel_delayMillis"/>
+    <declare-styleable name="ProgressWheel_barColor"/>
+    <declare-styleable name="ProgressWheel_barLengthPb"/>
+    <declare-styleable name="ProgressWheel_textSize"/>
+    <declare-styleable name="ProgressWheel_textColor"/>
+    <declare-styleable name="ProgressWheel_text"/>
+    <declare-styleable name="ProgressWheel_rimColor"/>
+    <declare-styleable name="ProgressWheel_circleColor"/>
+    <declare-styleable name="ProgressWheel_contourColor"/>
+    <declare-styleable name="ProgressWheel_contourSize"/>
+
+    <attr name="primaryLightAlpha" format="reference"/>
+    <attr name="secondaryLightAlpha" format="reference"/>
+    <attr name="thirdLightAlpha" format="reference"/>
+    <attr name="dividerLightAlpha" format="reference"/>
+</resources>

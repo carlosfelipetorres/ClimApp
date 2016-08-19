@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ClimApp</string>
+    <string name="cancel">Cancelar</string>
+    <string name="username">carlosfelipetorres75</string>
+    <string name="north">23</string>
+    <string name="south">-44</string>
+    <string name="east">153</string>
+    <string name="west">-133</string>
+</resources>
