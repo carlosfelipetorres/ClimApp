@@ -1,6 +1,8 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.clients;
 
 import android.app.Application;
+
+import com.domicilios.carlos.climapp.services.ServicesModule;
 
 /**
  * This is the WakeMeApp Application where Dependency Injection is set up

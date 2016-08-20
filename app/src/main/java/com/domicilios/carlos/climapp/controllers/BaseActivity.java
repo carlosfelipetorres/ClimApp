@@ -1,4 +1,4 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.controllers;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,10 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.domicilios.carlos.climapp.R;
+import com.domicilios.carlos.climapp.clients.ClimappApplication;
+import com.domicilios.carlos.climapp.clients.DiComponent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

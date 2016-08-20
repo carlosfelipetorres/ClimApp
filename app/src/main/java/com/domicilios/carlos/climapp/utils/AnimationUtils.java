@@ -1,4 +1,4 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.utils;
 
 import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;

@@ -1,9 +1,12 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.utils;
 
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.domicilios.carlos.climapp.R;
+import com.domicilios.carlos.climapp.model.TipoNotificacion;
+import com.domicilios.carlos.climapp.views.ProgressWheel;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.github.johnpersano.supertoasts.util.Style;
 

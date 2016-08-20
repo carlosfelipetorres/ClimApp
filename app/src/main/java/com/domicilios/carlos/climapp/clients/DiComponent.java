@@ -1,7 +1,12 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.clients;
 
 import android.app.Activity;
 import android.content.Context;
+
+import com.domicilios.carlos.climapp.controllers.ClimaActivity;
+import com.domicilios.carlos.climapp.controllers.MainActivity;
+import com.domicilios.carlos.climapp.controllers.MapsActivity;
+import com.domicilios.carlos.climapp.services.ServicesModule;
 
 import javax.inject.Singleton;
 

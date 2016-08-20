@@ -1,4 +1,7 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.services;
+
+import com.domicilios.carlos.climapp.model.Ciudad;
+import com.domicilios.carlos.climapp.model.ReporteClima;
 
 import java.util.List;
 

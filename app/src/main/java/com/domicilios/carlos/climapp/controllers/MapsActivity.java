@@ -1,5 +1,12 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.controllers;
 
+import com.domicilios.carlos.climapp.R;
+import com.domicilios.carlos.climapp.clients.DiComponent;
+import com.domicilios.carlos.climapp.model.ReporteClima;
+import com.domicilios.carlos.climapp.model.TipoNotificacion;
+import com.domicilios.carlos.climapp.services.IClimaService;
+import com.domicilios.carlos.climapp.utils.AppUtils;
+import com.domicilios.carlos.climapp.views.ProgressWheel;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,12 +18,9 @@ import com.google.android.gms.maps.model.LatLng;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -200,8 +204,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         @Override
         protected void onPostExecute(Void aVoid) {
             if (mReporte == null) {
-                AppUtils.crearToast(MapsActivity.this, "Hubo un error obteniendo los datos", SuperToast.Duration.MEDIUM,
-                        TipoNotificacion.ERROR).show();
+                enableProgressWheel(false);
+                if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                }
                 return;
             }
             mEstacionTv.setText(mReporte.getNombreEstacion());

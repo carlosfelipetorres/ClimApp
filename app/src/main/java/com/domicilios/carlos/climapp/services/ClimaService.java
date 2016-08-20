@@ -1,8 +1,17 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.services;
 
 import android.content.Context;
 
+import com.domicilios.carlos.climapp.clients.ClienteClimaSystem;
+import com.domicilios.carlos.climapp.clients.IClienteClimaSystem;
+import com.domicilios.carlos.climapp.model.Ciudad;
+import com.domicilios.carlos.climapp.model.ReporteClima;
+import com.domicilios.carlos.climapp.model.RespuestaCiudades;
+import com.domicilios.carlos.climapp.model.RespuestaReporte;
+import com.domicilios.carlos.climapp.model.TipoNotificacion;
+import com.domicilios.carlos.climapp.utils.AppUtils;
 import com.github.johnpersano.supertoasts.SuperToast;
+import com.domicilios.carlos.climapp.R;
 
 import java.util.List;
 
@@ -42,16 +51,17 @@ public class ClimaService implements IClimaService {
 
         Call<RespuestaReporte> call = climaApi.getClima(lat, lng, mContext.getString(R.string.username));
         Response<RespuestaReporte> response = mCliente.execute(call);
+
         if (!isSuccessful(response)) {
-            if(response.code() == 15){
-                AppUtils.crearToast(mContext, "No existe informacion para este punto", SuperToast.Duration.MEDIUM,
-                        TipoNotificacion.ALERTA).show();
-            }
-            if(response.code() == 13){
-                AppUtils.crearToast(mContext, "Hubo un problema con la conexion a internet", SuperToast.Duration.MEDIUM,
-                        TipoNotificacion.ALERTA).show();
-            }
             return null;
+        }
+        if(response.body().getStatus() != null && response.body().getStatus().getValue() == 15){
+            AppUtils.crearToast(mContext, "No existe informacion para este punto", SuperToast.Duration.MEDIUM,
+                    TipoNotificacion.ALERTA).show();
+        }
+        if(response.body().getStatus() != null && response.body().getStatus().getValue() == 13){
+            AppUtils.crearToast(mContext, "Hubo un problema con la conexion a internet", SuperToast.Duration.MEDIUM,
+                    TipoNotificacion.ALERTA).show();
         }
         return response.body().getWeatherObservations();
     }

@@ -1,4 +1,4 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,7 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.services;
+
+import com.domicilios.carlos.climapp.model.RespuestaCiudades;
+import com.domicilios.carlos.climapp.model.RespuestaReporte;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -23,8 +26,8 @@ public interface IClimaApi {
      */
     @GET("citiesJSON")
     Call<RespuestaCiudades> getCiudades(@Query("north") String north, @Query("south") String south,
-                                                @Query("east") String east, @Query("west") String west,
-                                                @Query("username") String username, @Query("maxRows") Integer maxRows);
+                                        @Query("east") String east, @Query("west") String west,
+                                        @Query("username") String username, @Query("maxRows") Integer maxRows);
 
     /**
      * Obtiene el reporte del clima para una ubicacion especifica
@@ -36,5 +39,5 @@ public interface IClimaApi {
      */
     @GET("findNearByWeatherJSON")
     Call<RespuestaReporte> getClima(@Query("lat") String lat, @Query("lng") String lng,
-                                                   @Query("username") String username);
+                                    @Query("username") String username);
 }

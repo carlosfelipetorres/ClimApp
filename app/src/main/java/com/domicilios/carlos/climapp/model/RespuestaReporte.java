@@ -1,9 +1,9 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.model;
 
+import com.domicilios.carlos.climapp.model.Mensaje;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Esta es la clase utilizada para recibir las respuestas del reporte

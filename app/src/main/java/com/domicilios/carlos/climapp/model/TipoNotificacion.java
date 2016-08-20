@@ -1,4 +1,4 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.model;
 
 /**
  * Tipos de notificación manejados por los Toasts

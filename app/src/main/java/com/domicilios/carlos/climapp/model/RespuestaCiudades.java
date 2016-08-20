@@ -1,5 +1,7 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.model;
 
+import com.domicilios.carlos.climapp.model.Ciudad;
+import com.domicilios.carlos.climapp.model.Mensaje;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.controllers;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,6 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.domicilios.carlos.climapp.R;
+import com.domicilios.carlos.climapp.clients.DiComponent;
+import com.domicilios.carlos.climapp.model.Ciudad;
+import com.domicilios.carlos.climapp.model.ReporteClima;
+import com.domicilios.carlos.climapp.model.TipoNotificacion;
+import com.domicilios.carlos.climapp.services.IClimaService;
+import com.domicilios.carlos.climapp.utils.AppUtils;
+import com.domicilios.carlos.climapp.utils.GPSTracker;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.google.android.gms.maps.model.LatLng;
 

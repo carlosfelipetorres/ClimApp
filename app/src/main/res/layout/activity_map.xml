@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MapsActivity">
+    tools:context=".controllers.MapsActivity">
 
     <fragment
         android:id="@+id/map"
@@ -139,7 +139,7 @@
                 android:textColor="@color/colorAccent"/>
         </LinearLayout>
     </LinearLayout>
-    <com.domicilios.carlos.climapp.ProgressWheel
+    <com.domicilios.carlos.climapp.views.ProgressWheel
         android:id="@+id/loading_pw"
         android:layout_width="60dp"
         android:layout_height="60dp"

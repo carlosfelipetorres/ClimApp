@@ -1,4 +1,4 @@
-package com.domicilios.carlos.climapp;
+package com.domicilios.carlos.climapp.views;
 
 
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
+import com.domicilios.carlos.climapp.R;
 
 /**
  * An indicator of progress, similar to Android's ProgressBar. Can be used in
