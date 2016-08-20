@@ -19,6 +19,7 @@ import com.domicilios.carlos.climapp.model.Ciudad;
 import com.domicilios.carlos.climapp.model.ReporteClima;
 import com.domicilios.carlos.climapp.model.TipoNotificacion;
 import com.domicilios.carlos.climapp.services.IClimaService;
+import com.domicilios.carlos.climapp.utils.AnimationUtils;
 import com.domicilios.carlos.climapp.utils.AppUtils;
 import com.domicilios.carlos.climapp.utils.GPSTracker;
 import com.github.johnpersano.supertoasts.SuperToast;
@@ -219,11 +220,17 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
 
                 Intent intent = new Intent(ClimaActivity.this, MapsActivity.class);
                 intent.putExtra(CURRENT, current);
-                startActivity(intent);
+                AnimationUtils.configurarAnimacion(ClimaActivity.this, mReporteLl, true, intent);
+
             }
         });
 
         new CargaReporteAsyncTask().execute();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
     }
 
     /**
@@ -268,7 +275,8 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
             mNubesTv.setText(mReporte.getNubes().toUpperCase());
             mLatTv.setText(mReporte.getLat().toString());
             mLonTv.setText(mReporte.getLongitud().toString());
-            mReporteLl.setVisibility(View.VISIBLE);
+
+            AnimationUtils.configurarAnimacion(ClimaActivity.this, mReporteLl, false);
             super.onPostExecute(aVoid);
 
             new CargaCiudadesAsyncTask().execute();

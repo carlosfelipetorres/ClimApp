@@ -5,6 +5,7 @@ import com.domicilios.carlos.climapp.clients.DiComponent;
 import com.domicilios.carlos.climapp.model.ReporteClima;
 import com.domicilios.carlos.climapp.model.TipoNotificacion;
 import com.domicilios.carlos.climapp.services.IClimaService;
+import com.domicilios.carlos.climapp.utils.AnimationUtils;
 import com.domicilios.carlos.climapp.utils.AppUtils;
 import com.domicilios.carlos.climapp.views.ProgressWheel;
 import com.github.johnpersano.supertoasts.SuperToast;
@@ -16,10 +17,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import javax.inject.Inject;
@@ -106,6 +109,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     ProgressWheel mLoadingPw;
 
     /**
+     * Informacion sobre el clima en el mapa
+     **/
+    @BindView(R.id.info_mapa_ll)
+    LinearLayout mInfoMapaLl;
+
+    /**
      * Google Map
      **/
     private GoogleMap mMap;
@@ -182,6 +191,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         selectCurrentPosition();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MapsActivity.this, ClimaActivity.class);
+        AnimationUtils.configurarAnimacion(MapsActivity.this, mInfoMapaLl, true, intent);
+    }
+
     /**
      * Esta clase realiza la carga inicial de manera asíncrona
      */
@@ -217,15 +232,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             mLatTv.setText(String.valueOf(mReporte.getLat()));
             mLonTv.setText(String.valueOf(mReporte.getLongitud()));
 
-            mTituloHumedadTv.setVisibility(View.VISIBLE);
-            mTituloNubesTv.setVisibility(View.VISIBLE);
-            mTituloLatTv.setVisibility(View.VISIBLE);
-            mTituloLonTv.setVisibility(View.VISIBLE);
-
             enableProgressWheel(false);
             if (mProgressDialog != null && mProgressDialog.isShowing()) {
                 mProgressDialog.dismiss();
             }
+            AnimationUtils.configurarAnimacion(MapsActivity.this, mInfoMapaLl, false);
 
             super.onPostExecute(aVoid);
         }
