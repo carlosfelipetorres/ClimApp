@@ -6,4 +6,6 @@
     <string name="south">-44</string>
     <string name="east">153</string>
     <string name="west">-133</string>
+    <string name="location_confirmation">Do you want to add this location to the location list?</string>
+    <string name="add_location">Add Location</string>
 </resources>

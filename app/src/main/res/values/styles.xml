@@ -8,15 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="StyledDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/colorPrimary</item>
+    <style name="StyledDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">?attr/secondaryLightAlpha</item>
-        <item name="android:windowTitleStyle">@style/DialogTitleTextStyle</item>
     </style>
 
     <style name="DialogTitleTextStyle">
         <item name="android:textColor">?attr/primaryLightAlpha</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
     </style>
+
+
 
 </resources>

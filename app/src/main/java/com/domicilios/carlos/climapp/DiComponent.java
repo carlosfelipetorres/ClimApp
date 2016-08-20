@@ -1,5 +1,6 @@
 package com.domicilios.carlos.climapp;
 
+import android.app.Activity;
 import android.content.Context;
 
 import javax.inject.Singleton;
@@ -24,5 +25,11 @@ public interface DiComponent {
 
     // Clima Activitie
     void inject(ClimaActivity activity);
+
+    // Maps Activity
+    void inject(MapsActivity activity);
+
+    // Main Activity
+    void inject(MainActivity activity);
 
 }

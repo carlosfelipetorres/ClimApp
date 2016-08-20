@@ -8,7 +8,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 /**
  * Utility class to manage standard animations in DBD Control
  *
- * @author <a href="mailto:aajn88@gmail.com">Antonio A. Jimenez N.</a>
+ * @author <a href="mailto:carlosfelipetorres75@gmail.com">Carlos Torres</a>
  */
 public final class AnimationUtils {
 

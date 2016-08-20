@@ -13,9 +13,11 @@
         android:layout_below="@id/title">
 
         <LinearLayout
+            android:id="@+id/reporte_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="invisible">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -45,12 +47,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/titulo_humedad_tv"
+                <ImageView
+                    android:id="@+id/icono_humedad_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="40dp"
-                    android:text="Humedad"
+                    android:src="@drawable/ic_invert_colors"
+                    android:layout_marginRight="10dp"
                     android:textSize="20dp"/>
 
                 <TextView
@@ -59,6 +61,8 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textSize="20dp"/>
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -66,12 +70,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/titulo_nubes_tv"
+                <ImageView
+                    android:id="@+id/icono_nubes_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="62dp"
-                    android:text="Nubes"
+                    android:src="@drawable/ic_cloud"
+                    android:layout_marginRight="10dp"
                     android:textSize="20dp"/>
 
                 <TextView
@@ -80,6 +84,8 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textSize="20dp"/>
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -91,8 +97,8 @@
                     android:id="@+id/titulo_latitud_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="80dp"
-                    android:text="Latitud" />
+                    android:layout_marginRight="20dp"
+                    android:text="Lat" />
 
                 <TextView
                     android:id="@+id/lat_tv"
@@ -110,8 +116,8 @@
                     android:id="@+id/titulo_longitud_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="68dp"
-                    android:text="Longitud" />
+                    android:layout_marginRight="20dp"
+                    android:text="Lng" />
 
                 <TextView
                     android:id="@+id/lon_tv"
@@ -135,11 +141,15 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:background="@color/caldroid_gray" />
+                android:background="@color/caldroid_gray"
+                android:visibility="invisible"/>
+
             <LinearLayout
+                android:id="@+id/ciudad_1_ll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="invisible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -151,12 +161,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <ImageView
                             android:id="@+id/titulo_humedad_ciudad_1_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="4dp"
-                            android:text="Humedad" />
+                            android:src="@drawable/ic_invert_colors_small"
+                            android:layout_gravity="top|left"/>
 
                         <TextView
                             android:id="@+id/humedad_ciudad_1_tv"
@@ -170,13 +180,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <ImageView
                             android:id="@+id/titulo_nubes_ciudad_1_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="20dp"
-                            android:text="Nubes" />
+                            android:src="@drawable/ic_cloud_small"
+                            android:layout_gravity="top|left"
+                            android:layout_marginBottom="20dp"/>
 
                         <TextView
                             android:id="@+id/nubes_ciudad_1_tv"
@@ -210,11 +220,14 @@
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:orientation="vertical"
-                android:background="@color/caldroid_gray"/>
+                android:background="@color/caldroid_gray"
+                android:visibility="invisible"/>
             <LinearLayout
+                android:id="@+id/ciudad_2_ll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="invisible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -226,12 +239,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <ImageView
                             android:id="@+id/titulo_humedad_ciudad_2_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="4dp"
-                            android:text="Humedad" />
+                            android:src="@drawable/ic_invert_colors_small"
+                            android:layout_gravity="top|left"/>
 
                         <TextView
                             android:id="@+id/humedad_ciudad_2_tv"
@@ -245,13 +258,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <ImageView
                             android:id="@+id/titulo_nubes_ciudad_2_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="20dp"
-                            android:text="Nubes" />
+                            android:src="@drawable/ic_cloud_small"
+                            android:layout_gravity="top|left"
+                            android:layout_marginBottom="20dp"/>
 
                         <TextView
                             android:id="@+id/nubes_ciudad_2_tv"
@@ -279,10 +292,16 @@
 
             </LinearLayout>
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/map_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/ic_pin_drop"/>
         </LinearLayout>
 
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-
 </LinearLayout>

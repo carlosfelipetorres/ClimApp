@@ -2,6 +2,8 @@ package com.domicilios.carlos.climapp;
 
 import android.content.Context;
 
+import com.github.johnpersano.supertoasts.SuperToast;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,6 +43,14 @@ public class ClimaService implements IClimaService {
         Call<RespuestaReporte> call = climaApi.getClima(lat, lng, mContext.getString(R.string.username));
         Response<RespuestaReporte> response = mCliente.execute(call);
         if (!isSuccessful(response)) {
+            if(response.code() == 15){
+                AppUtils.crearToast(mContext, "No existe informacion para este punto", SuperToast.Duration.MEDIUM,
+                        TipoNotificacion.ALERTA).show();
+            }
+            if(response.code() == 13){
+                AppUtils.crearToast(mContext, "Hubo un problema con la conexion a internet", SuperToast.Duration.MEDIUM,
+                        TipoNotificacion.ALERTA).show();
+            }
             return null;
         }
         return response.body().getWeatherObservations();
@@ -55,6 +65,10 @@ public class ClimaService implements IClimaService {
                 mContext.getString(R.string.west), mContext.getString(R.string.username), 275);
         Response<RespuestaCiudades> response = mCliente.execute(call);
         if (!isSuccessful(response)) {
+            if(response.code() == 13){
+                AppUtils.crearToast(mContext, "Hubo un problema con la conexion a internet", SuperToast.Duration.MEDIUM,
+                        TipoNotificacion.ALERTA).show();
+            }
             return null;
         }
         return response.body().getGeonames();

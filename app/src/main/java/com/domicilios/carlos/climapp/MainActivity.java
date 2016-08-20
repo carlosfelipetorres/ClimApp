@@ -3,8 +3,9 @@ package com.domicilios.carlos.climapp;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
 import android.widget.ImageView;
 
 import butterknife.BindView;
@@ -23,7 +24,7 @@ public class MainActivity extends BaseActivity {
     private static final int ANIM_DELAY = 500;
 
     /** Constant for animations duration **/
-    private static final int ANIM_DURATION = 500;
+    private static final int ANIM_DURATION = 1000;
 
     /** Delay for the splash view **/
     private static final int SPLASH_DELAY = 2500;
@@ -37,7 +38,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-
     }
 
     /**
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
      * This method redirects to the right Activity depending if the session is active or not
      */
     private void redirectActivity() {
-        Intent alarmManagerIntent = new Intent(this, PrincipalPostActivity.class);
+        Intent alarmManagerIntent = new Intent(this, ClimaActivity.class);
         startActivity(alarmManagerIntent);
     }
 

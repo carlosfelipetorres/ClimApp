@@ -62,8 +62,8 @@ public class AppUtils {
      * @param refreshLayout SwipeRefreshLayout a inicializar
      */
     public static void initSwipeRefreshLayout(SwipeRefreshLayout refreshLayout) {
-        refreshLayout.setColorSchemeResources(R.color.caldroid_lighter_gray, R.color.black,
-                R.color.caldroid_light_red, R.color.caldroid_sky_blue);
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.black,
+                R.color.colorAccent, R.color.caldroid_sky_blue);
     }
 
     /**
