@@ -8,11 +8,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -178,9 +182,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
      * Esta clase realiza la carga inicial de manera asíncrona
      */
     private class CargaReporteAsyncTask extends AsyncTask<LatLng, Void, Void> {
+        /** Progress Dialog **/
+        private ProgressDialog mProgressDialog;
 
         @Override
         protected void onPreExecute() {
+            mProgressDialog = ProgressDialog.show(MapsActivity.this, "", "Loading");
             super.onPreExecute();
         }
 
@@ -210,6 +217,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             mTituloLonTv.setVisibility(View.VISIBLE);
 
             enableProgressWheel(false);
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
 
             super.onPostExecute(aVoid);
         }
