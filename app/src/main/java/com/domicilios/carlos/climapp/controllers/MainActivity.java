@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import com.domicilios.carlos.climapp.R;
 import com.domicilios.carlos.climapp.clients.DiComponent;
 import com.domicilios.carlos.climapp.utils.AnimationUtils;
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
 import butterknife.BindView;
 
@@ -40,6 +43,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(getApplication());
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
         init();
     }
 

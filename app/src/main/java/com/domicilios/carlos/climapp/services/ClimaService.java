@@ -10,6 +10,7 @@ import com.domicilios.carlos.climapp.model.RespuestaCiudades;
 import com.domicilios.carlos.climapp.model.RespuestaReporte;
 import com.domicilios.carlos.climapp.model.TipoNotificacion;
 import com.domicilios.carlos.climapp.utils.AppUtils;
+import com.facebook.AccessToken;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.domicilios.carlos.climapp.R;
 
@@ -40,6 +41,9 @@ public class ClimaService implements IClimaService {
      * Application context
      **/
     private Context mContext;
+
+    /**Acces token for facebook **/
+    private AccessToken accessToken;
 
     public ClimaService(Context context) {
         this.mContext = context;
@@ -104,5 +108,20 @@ public class ClimaService implements IClimaService {
      */
     public static boolean isSuccessful(Response response) {
         return response != null && response.isSuccessful();
+    }
+
+    /**
+     * @return the accessToken
+     */
+    public AccessToken getAccessToken() {
+        return accessToken;
+    }
+
+    /**
+     * @param accessToken
+     *         the accessToken to set
+     */
+    public void setAccessToken(AccessToken accessToken) {
+        this.accessToken = accessToken;
     }
 }

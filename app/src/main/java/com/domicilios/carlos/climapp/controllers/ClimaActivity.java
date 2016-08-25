@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,8 +23,20 @@ import com.domicilios.carlos.climapp.services.IClimaService;
 import com.domicilios.carlos.climapp.utils.AnimationUtils;
 import com.domicilios.carlos.climapp.utils.AppUtils;
 import com.domicilios.carlos.climapp.utils.GPSTracker;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -38,7 +51,7 @@ import butterknife.BindView;
  */
 public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    /**Posicion actual**/
+    /** Posicion actual **/
     public static final String CURRENT = "CURRENT";
     /**
      * Estacion
@@ -195,6 +208,18 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     @BindView(R.id.map_fab)
     FloatingActionButton fab;
 
+    /**
+     * Info de usuario
+     **/
+    @BindView(R.id.nombre_usuario_tv)
+    TextView mNomUserTv;
+
+    /**
+     * FB login button
+     **/
+    @BindView(R.id.login_button)
+    LoginButton loginButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -225,6 +250,61 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
             }
         });
 
+        if(FacebookSdk.isInitialized()){
+            loginButton.setVisibility(View.GONE);
+            mNomUserTv.setVisibility(View.VISIBLE);
+
+            GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            try {
+                                mNomUserTv.setText("Hi, " + object.getString("name"));
+                            } catch (JSONException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,email,gender, birthday");
+            request.setParameters(parameters);
+            request.executeAsync();
+        }
+        loginButton.setReadPermissions("email");
+        final CallbackManager callbackManager = CallbackManager.Factory.create();
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                loginButton.setVisibility(View.GONE);
+                mNomUserTv.setVisibility(View.VISIBLE);
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                try {
+                                    mNomUserTv.setText("Hi, " + object.getString("name"));
+                                } catch (JSONException ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender, birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Log.e("FACEBOOK", "onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.e("FACEBOOK", "onError");
+            }
+        });
+
         new CargaReporteAsyncTask().execute();
     }
 
@@ -236,7 +316,8 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     /**
      * Injection component. This should be done if there are fields to be injected
      *
-     * @param diComponent Dependency injection
+     * @param diComponent
+     *         Dependency injection
      */
     @Override
     protected void injectComponent(DiComponent diComponent) {
@@ -402,8 +483,10 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     /**
      * Set de spinner con lista especificada
      *
-     * @param spinner Vista spinner
-     * @param objetos Lista de objetos
+     * @param spinner
+     *         Vista spinner
+     * @param objetos
+     *         Lista de objetos
      */
     private void setSpinner(Spinner spinner, List<?> objetos) {
         ArrayAdapter<?> adapterTipoMaterial =
@@ -480,7 +563,9 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     /**
      * Obtiene un valor cuantitativo para los codigos de nubes. Tomados de la documentacion METAR
      *
-     * @param codigo Codigo de nubes
+     * @param codigo
+     *         Codigo de nubes
+     *
      * @return Valor numerico
      */
     private Integer obtenerCodigoNubes(String codigo) {
