@@ -9,10 +9,13 @@ import android.widget.ImageView;
 
 import com.domicilios.carlos.climapp.R;
 import com.domicilios.carlos.climapp.clients.DiComponent;
+import com.domicilios.carlos.climapp.services.IClimaService;
 import com.domicilios.carlos.climapp.utils.AnimationUtils;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -39,6 +42,10 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.logo_iv)
     ImageView mLogoIv;
 
+    /**Clima service**/
+    @Inject
+    IClimaService climaService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +53,7 @@ public class MainActivity extends BaseActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(getApplication());
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        climaService.setAccessToken(accessToken);
         init();
     }
 

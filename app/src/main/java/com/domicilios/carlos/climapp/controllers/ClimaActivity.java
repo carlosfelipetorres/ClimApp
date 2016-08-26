@@ -1,6 +1,8 @@
 package com.domicilios.carlos.climapp.controllers;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,14 +34,24 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.login.widget.ProfilePictureView;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.google.android.gms.maps.model.LatLng;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,7 +65,9 @@ import butterknife.BindView;
  */
 public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    /** Posicion actual **/
+    /**
+     * Posicion actual
+     **/
     public static final String CURRENT = "CURRENT";
     /**
      * Estacion
@@ -215,10 +231,40 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     TextView mNomUserTv;
 
     /**
+     * Info de usuario
+     **/
+    @BindView(R.id.foto_face_iv)
+    ImageView mFotoFaceIv;
+
+    /**
      * FB login button
      **/
     @BindView(R.id.login_button)
     LoginButton loginButton;
+
+    /**
+     * FB logout button
+     **/
+    @BindView(R.id.logout_btn)
+    Button logoutButton;
+
+    /**
+     * callback mananger
+     **/
+    CallbackManager callbackManager;
+
+    private static final DisplayImageOptions.Builder DEFAULT_DISPLAY_IMAGE_OPTIONS_BUIDLER =
+            new DisplayImageOptions.Builder()
+                    .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+                    .displayer(new FadeInBitmapDisplayer(300, true, false, false))
+                    .showImageForEmptyUri(R.drawable.default_image)
+                    .showImageOnLoading(R.drawable.default_image).considerExifParams(true)
+                    .showImageOnFail(R.drawable.default_image).cacheOnDisk(true)
+                    .cacheInMemory(true).bitmapConfig(Bitmap.Config.ARGB_8888);
+
+    private static final DisplayImageOptions DEFAULT_DISPLAY_IMAGE_OPTIONS =
+            DEFAULT_DISPLAY_IMAGE_OPTIONS_BUIDLER
+                    .build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,6 +283,14 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
 
         AppUtils.initSwipeRefreshLayout(mRefreshLayout);
         mRefreshLayout.setOnRefreshListener(this);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logOut();
+                Intent intent = new Intent(ClimaActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,62 +304,63 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
             }
         });
 
-        if(FacebookSdk.isInitialized()){
-            loginButton.setVisibility(View.GONE);
-            mNomUserTv.setVisibility(View.VISIBLE);
+        if (FacebookSdk.isInitialized() && AccessToken.getCurrentAccessToken() != null) {
+            configureProfile();
 
-            GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-                    new GraphRequest.GraphJSONObjectCallback() {
-                        @Override
-                        public void onCompleted(JSONObject object, GraphResponse response) {
-                            try {
-                                mNomUserTv.setText("Hi, " + object.getString("name"));
-                            } catch (JSONException ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    });
-            Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,email,gender, birthday");
-            request.setParameters(parameters);
-            request.executeAsync();
         }
         loginButton.setReadPermissions("email");
-        final CallbackManager callbackManager = CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                loginButton.setVisibility(View.GONE);
-                mNomUserTv.setVisibility(View.VISIBLE);
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                try {
-                                    mNomUserTv.setText("Hi, " + object.getString("name"));
-                                } catch (JSONException ex) {
-                                    ex.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender, birthday");
-                request.setParameters(parameters);
-                request.executeAsync();
+                configureProfile();
             }
 
             @Override
             public void onCancel() {
                 Log.e("FACEBOOK", "onCancel");
+                AppUtils.crearToast(ClimaActivity.this, "Cancelaste la accion", SuperToast.Duration.MEDIUM,
+                        TipoNotificacion.INFORMATIVA).show();
             }
 
             @Override
             public void onError(FacebookException exception) {
                 Log.e("FACEBOOK", "onError");
+                AppUtils.crearToast(ClimaActivity.this, "Se ha producido un error con Facebook", SuperToast.Duration.MEDIUM,
+                        TipoNotificacion.ERROR).show();
             }
         });
 
         new CargaReporteAsyncTask().execute();
+    }
+
+    /**
+     * Configuracion del perfil del usuario
+     */
+    private void configureProfile() {
+        loginButton.setVisibility(View.GONE);
+        mNomUserTv.setVisibility(View.VISIBLE);
+        mFotoFaceIv.setVisibility(View.VISIBLE);
+        logoutButton.setVisibility(View.VISIBLE);
+        Profile profile = Profile.getCurrentProfile();
+        mNomUserTv.setText(profile.getName());
+        Uri uri = profile.getProfilePictureUri(42, 42);
+        ImageLoader loader = ImageLoader.getInstance();
+        if (!loader.isInited()) {
+            loader.init(ImageLoaderConfiguration.createDefault(this));
+        }
+        try {
+            loader.displayImage(uri.toString(), mFotoFaceIv, DEFAULT_DISPLAY_IMAGE_OPTIONS, null);
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            loader.clearMemoryCache();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -316,8 +371,7 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     /**
      * Injection component. This should be done if there are fields to be injected
      *
-     * @param diComponent
-     *         Dependency injection
+     * @param diComponent Dependency injection
      */
     @Override
     protected void injectComponent(DiComponent diComponent) {
@@ -483,10 +537,8 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     /**
      * Set de spinner con lista especificada
      *
-     * @param spinner
-     *         Vista spinner
-     * @param objetos
-     *         Lista de objetos
+     * @param spinner Vista spinner
+     * @param objetos Lista de objetos
      */
     private void setSpinner(Spinner spinner, List<?> objetos) {
         ArrayAdapter<?> adapterTipoMaterial =
@@ -563,9 +615,7 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     /**
      * Obtiene un valor cuantitativo para los codigos de nubes. Tomados de la documentacion METAR
      *
-     * @param codigo
-     *         Codigo de nubes
-     *
+     * @param codigo Codigo de nubes
      * @return Valor numerico
      */
     private Integer obtenerCodigoNubes(String codigo) {

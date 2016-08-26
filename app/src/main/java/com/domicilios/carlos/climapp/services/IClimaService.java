@@ -2,6 +2,7 @@ package com.domicilios.carlos.climapp.services;
 
 import com.domicilios.carlos.climapp.model.Ciudad;
 import com.domicilios.carlos.climapp.model.ReporteClima;
+import com.facebook.AccessToken;
 
 import java.util.List;
 
@@ -25,4 +26,18 @@ public interface IClimaService {
      * @return ciudades
      */
     List<Ciudad> obtenerCiudades();
+
+    /**
+     * obtiene el token guardado
+     *
+     * @return access token
+     */
+    AccessToken getAccessToken();
+
+    /**
+     * Guarda el token
+     *
+     * @param accessToken the accessToken to set
+     */
+    void setAccessToken(AccessToken accessToken);
 }
