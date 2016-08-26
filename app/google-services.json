@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "788429524942",
+    "project_id": "firebase-climapp"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788429524942:android:ecf22bee63d7d691",
+        "android_client_info": {
+          "package_name": "com.domicilios.carlos.climapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "788429524942-vgkd84nu6uie9pf4kf41lo2bn56ano4v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.domicilios.carlos.climapp",
+            "certificate_hash": "8CFB11109A20348E9FBADBFD481CDF87BB473AA9"
+          }
+        },
+        {
+          "client_id": "788429524942-qr00rm1n3sq1e0aggh9j1bq0v76pf7pm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjVpwLTeZpCjgtGgW-yODIXAzM936hy28"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

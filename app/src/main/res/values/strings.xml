@@ -9,4 +9,5 @@
     <string name="location_confirmation">Do you want to add this location to the location list?</string>
     <string name="add_location">Add Location</string>
     <string name="facebook_app_id">718315238306752</string>
+    <string name="signed_in_fmt">Hola %s</string>
 </resources>

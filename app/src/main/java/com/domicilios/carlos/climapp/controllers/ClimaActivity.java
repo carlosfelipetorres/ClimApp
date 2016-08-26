@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -32,26 +33,28 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.facebook.login.widget.ProfilePictureView;
 import com.github.johnpersano.supertoasts.SuperToast;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URI;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -63,7 +66,14 @@ import butterknife.BindView;
  *
  * @author <a href="mailto:carlosfelipetorres75@gmail.com">Carlos Torres</a>
  */
-public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, GoogleApiClient.OnConnectionFailedListener {
+
+    /** Tag for logs **/
+    private static final String TAG = ClimaActivity.class.getName();
+
+    /** Constante de activity Sign-In **/
+    private static final int RC_SIGN_IN = 9001;
+    private static final int FB_SIGN_IN = 64206;
 
     /**
      * Posicion actual
@@ -249,9 +259,18 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     Button logoutButton;
 
     /**
+     * Google Sign-in button
+     **/
+    @BindView(R.id.sign_in_button)
+    SignInButton signInButton;
+
+    /**
      * callback mananger
      **/
     CallbackManager callbackManager;
+
+    /**Google api client**/
+    private GoogleApiClient mGoogleApiClient;
 
     private static final DisplayImageOptions.Builder DEFAULT_DISPLAY_IMAGE_OPTIONS_BUIDLER =
             new DisplayImageOptions.Builder()
@@ -287,6 +306,8 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 LoginManager.getInstance().logOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient);
                 Intent intent = new Intent(ClimaActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -296,7 +317,6 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 LatLng current = new LatLng(tracker.getLatitude(), tracker.getLongitude());
-
                 Intent intent = new Intent(ClimaActivity.this, MapsActivity.class);
                 intent.putExtra(CURRENT, current);
                 AnimationUtils.configurarAnimacion(ClimaActivity.this, mReporteLl, true, intent);
@@ -304,7 +324,75 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
             }
         });
 
-        if (FacebookSdk.isInitialized() && AccessToken.getCurrentAccessToken() != null) {
+        facebookConfiguration();
+
+        //GOOGLE SING-IN CONFIGURATION
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        OptionalPendingResult<GoogleSignInResult> result = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if(result.isDone()){
+            handleSignInResult(result.get());
+        }
+
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setScopes(gso.getScopeArray());
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
+
+        new CargaReporteAsyncTask().execute();
+    }
+
+    /**
+     * Metodo para hacer sign in en google
+     */
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    /**
+     * Metodo para log out de google
+     */
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        updateUI(false, null);
+                    }
+                });
+    }
+
+    /**
+     * Revoca el acceso de google
+     */
+    private void revokeAccess() {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        updateUI(false, null);
+                    }
+                });
+    }
+
+    /**
+     * Set the parameters for FB
+     */
+    private void facebookConfiguration() {
+        if (FacebookSdk.isInitialized() && AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile()!=null) {
             configureProfile();
 
         }
@@ -330,8 +418,6 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
                         TipoNotificacion.ERROR).show();
             }
         });
-
-        new CargaReporteAsyncTask().execute();
     }
 
     /**
@@ -339,6 +425,7 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
      */
     private void configureProfile() {
         loginButton.setVisibility(View.GONE);
+        signInButton.setVisibility(View.GONE);
         mNomUserTv.setVisibility(View.VISIBLE);
         mFotoFaceIv.setVisibility(View.VISIBLE);
         logoutButton.setVisibility(View.VISIBLE);
@@ -360,7 +447,52 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FB_SIGN_IN) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    /**
+     * Gestiona el resultado del login google
+     * @param result
+     */
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        GoogleSignInAccount acct = result.getSignInAccount();
+        if (result.isSuccess()) {
+            updateUI(true, acct);
+        } else {
+            updateUI(false, acct);
+        }
+    }
+
+    private void updateUI(boolean signedIn, GoogleSignInAccount acct) {
+        if (signedIn) {
+            mNomUserTv.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+            signInButton.setVisibility(View.GONE);
+            loginButton.setVisibility(View.GONE);
+            mNomUserTv.setVisibility(View.VISIBLE);
+            Uri personPhoto = acct.getPhotoUrl();
+            mFotoFaceIv.setVisibility(View.VISIBLE);
+            ImageLoader loader = ImageLoader.getInstance();
+            if (!loader.isInited()) {
+                loader.init(ImageLoaderConfiguration.createDefault(this));
+            }
+            try {
+                loader.displayImage(personPhoto.toString(), mFotoFaceIv, DEFAULT_DISPLAY_IMAGE_OPTIONS, null);
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+                loader.clearMemoryCache();
+            }
+            logoutButton.setVisibility(View.VISIBLE);
+        }else{
+            AppUtils.crearToast(ClimaActivity.this, "Hubo un error obteniendo los datos", SuperToast.Duration.MEDIUM,
+                    TipoNotificacion.ERROR).show();
+        }
     }
 
     @Override
@@ -381,6 +513,11 @@ public class ClimaActivity extends BaseActivity implements SwipeRefreshLayout.On
     @Override
     public void onRefresh() {
         new CargaReporteAsyncTask().execute();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
     /**

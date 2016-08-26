@@ -26,9 +26,6 @@ import butterknife.BindView;
  */
 public class MainActivity extends BaseActivity {
 
-    /** Tag for logs **/
-    private static final String TAG = MainActivity.class.getName();
-
     /** Constant for animation delay **/
     private static final int ANIM_DELAY = 500;
 
@@ -50,10 +47,13 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //FACEBOOK LOGIN CONFIG
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(getApplication());
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         climaService.setAccessToken(accessToken);
+
         init();
     }
 

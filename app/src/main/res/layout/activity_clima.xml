@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.domicilios.carlos.climapp.controllers.ClimaActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.domicilios.carlos.climapp.controllers.ClimaActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -31,8 +43,8 @@
                     android:id="@+id/foto_face_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="42dp"
-                    android:src="@mipmap/ic_launcher"
                     android:layout_marginRight="10dp"
+                    android:src="@mipmap/ic_launcher"
                     android:visibility="gone"/>
 
                 <TextView
@@ -40,24 +52,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_toRightOf="@id/foto_face_iv"
                     android:text="hola bla bla"
                     android:textAlignment="center"
                     android:textSize="20dp"
-                    android:layout_toRightOf="@id/foto_face_iv"
                     android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/logout_btn"
+                    style="@style/Base.AlertDialog.AppCompat.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="42dp"
+                    android:layout_alignParentRight="true"
                     android:layout_gravity="center_vertical|right"
                     android:text="Logout"
-                    android:layout_alignParentRight="true"
-                    style="@style/Base.AlertDialog.AppCompat.Light"
                     android:visibility="gone"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
-
 
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -66,292 +77,296 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title">
 
-            <LinearLayout
-                android:id="@+id/reporte_ll"
+            <ScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="invisible">
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/reporte_ll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:visibility="invisible">
 
-                    <TextView
-                        android:id="@+id/estacion_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:text=""
-                        android:textSize="40dp" />
-
-                    <TextView
-                        android:id="@+id/temperatura_tv"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignRight="@id/estacion_tv"
-                        android:layout_marginTop="30dp"
-                        android:text=""
-                        android:textSize="90dp" />
-                </RelativeLayout>
+                        android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/estacion_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:text=""
+                            android:textSize="40dp"/>
 
-                    <ImageView
-                        android:id="@+id/icono_humedad_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/ic_invert_colors"
-                        android:textSize="20dp" />
-
-                    <TextView
-                        android:id="@+id/humedad_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="20dp" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/icono_nubes_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/ic_cloud"
-                        android:textSize="20dp" />
-
-                    <TextView
-                        android:id="@+id/nubes_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="20dp" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/titulo_latitud_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="Lat" />
-
-                    <TextView
-                        android:id="@+id/lat_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/titulo_longitud_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="Lng" />
-
-                    <TextView
-                        android:id="@+id/lon_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:background="@color/black"
-                    android:src="@color/black" />
-
-                <Spinner
-                    android:id="@+id/ciudades_1_sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:background="@color/caldroid_gray"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:visibility="invisible" />
-
-                <LinearLayout
-                    android:id="@+id/ciudad_1_ll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="invisible">
+                        <TextView
+                            android:id="@+id/temperatura_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@id/estacion_tv"
+                            android:layout_marginTop="30dp"
+                            android:text=""
+                            android:textSize="90dp"/>
+                    </RelativeLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/icono_humedad_tv"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/ic_invert_colors"
+                            android:textSize="20dp"/>
 
-                            <ImageView
-                                android:id="@+id/titulo_humedad_ciudad_1_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top|left"
-                                android:src="@drawable/ic_invert_colors_small" />
-
-                            <TextView
-                                android:id="@+id/humedad_ciudad_1_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/humedad_tv"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:id="@+id/titulo_nubes_ciudad_1_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top|left"
-                                android:layout_marginBottom="20dp"
-                                android:src="@drawable/ic_cloud_small" />
-
-                            <TextView
-                                android:id="@+id/nubes_ciudad_1_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="" />
-                        </LinearLayout>
+                            android:text=""
+                            android:textSize="20dp"/>
 
 
                     </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/temperatura_ciudad_1_tv"
+                        <ImageView
+                            android:id="@+id/icono_nubes_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="40dp"
-                            android:gravity="right"
-                            android:text="80°C"
-                            android:textSize="40dp" />
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/ic_cloud"
+                            android:textSize="20dp"/>
 
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <Spinner
-                    android:id="@+id/ciudades_2_sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:background="@color/caldroid_gray"
-                    android:orientation="vertical"
-                    android:visibility="invisible" />
-
-                <LinearLayout
-                    android:id="@+id/ciudad_2_ll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="invisible">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/nubes_tv"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:id="@+id/titulo_humedad_ciudad_2_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top|left"
-                                android:src="@drawable/ic_invert_colors_small" />
-
-                            <TextView
-                                android:id="@+id/humedad_ciudad_2_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:id="@+id/titulo_nubes_ciudad_2_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top|left"
-                                android:layout_marginBottom="20dp"
-                                android:src="@drawable/ic_cloud_small" />
-
-                            <TextView
-                                android:id="@+id/nubes_ciudad_2_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="" />
-                        </LinearLayout>
+                            android:text=""
+                            android:textSize="20dp"/>
 
 
                     </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/temperatura_ciudad_2_tv"
+                            android:id="@+id/titulo_latitud_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="40dp"
-                            android:gravity="right"
-                            android:text="80°C"
-                            android:textSize="40dp" />
+                            android:layout_marginRight="20dp"
+                            android:text="Lat"/>
 
-                    </RelativeLayout>
+                        <TextView
+                            android:id="@+id/lat_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/titulo_longitud_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="Lng"/>
+
+                        <TextView
+                            android:id="@+id/lon_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:background="@color/black"
+                        android:src="@color/black"/>
+
+                    <Spinner
+                        android:id="@+id/ciudades_1_sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:background="@color/caldroid_gray"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:visibility="invisible"/>
+
+                    <LinearLayout
+                        android:id="@+id/ciudad_1_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="invisible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/titulo_humedad_ciudad_1_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|left"
+                                    android:src="@drawable/ic_invert_colors_small"/>
+
+                                <TextView
+                                    android:id="@+id/humedad_ciudad_1_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text=""/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/titulo_nubes_ciudad_1_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|left"
+                                    android:layout_marginBottom="20dp"
+                                    android:src="@drawable/ic_cloud_small"/>
+
+                                <TextView
+                                    android:id="@+id/nubes_ciudad_1_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text=""/>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/temperatura_ciudad_1_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="40dp"
+                                android:gravity="right"
+                                android:text="80°C"
+                                android:textSize="40dp"/>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <Spinner
+                        android:id="@+id/ciudades_2_sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/caldroid_gray"
+                        android:orientation="vertical"
+                        android:visibility="invisible"/>
+
+                    <LinearLayout
+                        android:id="@+id/ciudad_2_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="invisible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/titulo_humedad_ciudad_2_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|left"
+                                    android:src="@drawable/ic_invert_colors_small"/>
+
+                                <TextView
+                                    android:id="@+id/humedad_ciudad_2_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text=""/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/titulo_nubes_ciudad_2_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top|left"
+                                    android:layout_marginBottom="20dp"
+                                    android:src="@drawable/ic_cloud_small"/>
+
+                                <TextView
+                                    android:id="@+id/nubes_ciudad_2_tv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text=""/>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/temperatura_ciudad_2_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="40dp"
+                                android:gravity="right"
+                                android:text="80°C"
+                                android:textSize="40dp"/>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-
+            </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
@@ -364,7 +379,7 @@
         android:layout_gravity="end"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
-        android:src="@drawable/ic_pin_drop" />
+        android:src="@drawable/ic_pin_drop"/>
 </RelativeLayout>
 
 
